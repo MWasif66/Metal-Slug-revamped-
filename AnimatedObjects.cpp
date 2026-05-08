@@ -30,6 +30,11 @@ State AnimatedObjects::getCurrentState()
 	return currentState;
 }
 
+State& AnimatedObjects::setCurrentState()
+{
+	return currentState;
+}
+
 void AnimatedObjects::setVelocityX(float x)
 {
 	velocityX = x;

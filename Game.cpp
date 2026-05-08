@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Player.h"
+
 
 
 void draw_player(RenderWindow& window, Sprite& playerSprite, float player_x, float player_y)
@@ -26,6 +28,7 @@ void display_level(RenderWindow& window, const int height, const int width, char
 
 void Game::run()
 {
+
 	int screen_x = 1600;
 	int screen_y = 900;
 
@@ -42,6 +45,8 @@ void Game::run()
 	const int cell_size = 64;
 	const int height = 14;
 	const int width = 110;
+
+
 
 	char** lvl = NULL;
 
@@ -63,34 +68,35 @@ void Game::run()
 	wallSprite1.setTexture(wallTex1);
 
 	////////////////////////////////////////////////////////
-	float player_x = 380;
-	float player_y = 610;	// row 11 * 64 - Pheight = 704 - 94
+	
+	// IMPORTANT NOTE: dt give approx 0.016 value
+	float player_x = 500;
+	float player_y = 100;	// row 11 * 64 - Pheight = 704 - 94
 
-	float max_speed = 5;
+	float max_speed = 10;
+	float jumpVelocity=70;
 	float velocityX = 0;
-	float acceleration = 0.5;
+	float acceleration = 100;
 
-	float scale_x = 0.2;
-	float scale_y = 0.2;
-
-	int raw_img_x = 593;
-	int raw_img_y = 470;
-
-	int Pheight = raw_img_y * scale_y;	// 94
-	int Pwidth = raw_img_x * scale_x;	// 119
+	int Pheight = cell_size*2;//raw_img_y * scale_y;	// 94
+	int Pwidth = cell_size* 5/3 ;//raw_img_x * scale_x;	// 119
 
 	Texture playerTex;
 	Sprite playerSprite;
 
-	playerTex.loadFromFile("Sprites/Character.png");
+	playerTex.loadFromFile(("Sprites/Eri Kasamoto.png"));
+	
 	playerSprite.setTexture(playerTex);
-	playerSprite.setScale(scale_x, scale_y);
+	//playerSprite.setScale(scale_x, scale_y);
+
+	Player* player = new Player(player_x, player_y, Pwidth/2, Pheight/2, playerTex, 0.0f, 0.0f, jumpVelocity, acceleration,max_speed);
 
 	////////////////////////////////////////////////////////
 
 	Event ev;
 	while (window.isOpen())
 	{
+		// closing loop
 		while (window.pollEvent(ev))
 		{
 			if (ev.type == Event::Closed)
@@ -103,32 +109,43 @@ void Game::run()
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Escape))
+		// set dt to make game platform independent
+		float dt = clock.restart().asSeconds(); // get time in delta seconds this will be passed in update 
+		
+
+
+		//////////////////////////////////////////////////////////////////////// updates
+		// 
+			// makes sure that player does not get bellow screen
+		if (player->getPosition().y + player->getHitBox().height >= screen_y)	
 		{
-			window.close();
+			player->setCurrentState().onGround = true;
+			player->setCurrentState().inAir = false;
+			player->setPosition(player->getPosition().x,screen_y - player->getHitBox().height);
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			velocityX += acceleration;
-			if (velocityX > max_speed) velocityX = max_speed;
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			velocityX -= acceleration;
-			if (velocityX < -max_speed) velocityX = -max_speed;
-		}
-		else
-		{
-			velocityX = 0;
-		}
+		// Check bounds 
+		bool isAtLeftWall = (player->getPosition().x <= 10);
+		bool isAtRightWall = (player->getPosition().x + player->getHitBox().width >= screen_x);
 
-		player_x += velocityX;
+		// Set both bounds
+		player->setMovemntBound(isAtLeftWall, isAtRightWall);
 
+			
+			
+
+		///////////////////////////////////////////////////////////////////////////////////////
+
+		player->update(dt);
+
+		
+		//std::cout << player->getPosition().x << ' ' << player->getPosition().y << std::endl;
+		
+		// redering
 		window.clear();
 
 		display_level(window, height, width, lvl, wallSprite1, cell_size);
-		draw_player(window, playerSprite, player_x, player_y);
+		player->render(window);
 
 		window.display();
 	}

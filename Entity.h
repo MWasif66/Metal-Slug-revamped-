@@ -8,7 +8,28 @@
 #include <SFML/Window.hpp>
 
 
-const int GRAVITY = 10;// it will be used in many entities
+// for coldown durations fire rate boss phases and much more
+struct Timer {
+	float maxTime;      
+	float elapsed;      
+
+	Timer(float maxTime) : maxTime(maxTime), elapsed(maxTime) {}
+	// elapsed starts = maxTime so it's ready immediately on spawn
+
+	void update(float dt) {
+		if (elapsed < maxTime)
+			elapsed += dt;
+	}
+
+	bool isReady() const {
+		return elapsed >= maxTime;
+	}
+
+	void use() {
+		elapsed = 0.f;  // reset the timer
+	}
+
+};
 
 using namespace sf;
 struct Position	// for the position
@@ -44,7 +65,7 @@ public:
 	//void setHitBox(); don't think its needed
 	void setTexture(Texture t); //for animations if implemented
 
-	virtual void update() = 0;
+	virtual void update(float dt) = 0;
 	virtual void render(sf:: RenderWindow & window) = 0;	// passing window to draw sprites of each entity
 
 };

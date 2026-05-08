@@ -4,6 +4,7 @@
 
 class Game
 {
+	sf::Clock clock;
 public:
 	void run();
 };

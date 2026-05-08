@@ -29,6 +29,7 @@ public:
 	float getVelocityX();
 	float getVelocityY();
 	State getCurrentState();
+	State& setCurrentState();
 
 	void setVelocityX(float x);
 	void setVelocityY(float y);

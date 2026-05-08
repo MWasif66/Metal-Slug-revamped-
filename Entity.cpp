@@ -8,6 +8,12 @@ Entity::Entity(int x, int y, int width, int height, Texture &texture)
 	hitBox.width = width;
 	this->texture = texture;
 	this->sprite.setTexture(texture);
+	
+	// resizing sprite
+	float scale_x = (float)hitBox.width / texture.getSize().x;
+	float scale_y = (float)hitBox.height / texture.getSize().y;
+	sprite.setScale(scale_x, scale_y);
+
 	isAlive = true;
 }
 
