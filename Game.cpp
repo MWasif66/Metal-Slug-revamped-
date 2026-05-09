@@ -150,7 +150,6 @@ void Game::run()
 		window.display();
 	}
 
-
+	delete player;
 }
-	// functions
 
