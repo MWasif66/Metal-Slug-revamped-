@@ -1,8 +1,6 @@
 #include "Game.h"
 #include "Player.h"
-#include "BulletPool.h"
-#include "GrenadePool.h"
-#include "RocketPool.h"
+
 
 void display_level(RenderWindow& window, const int height, const int width, char** lvl, Sprite& wallSprite1, const int cell_size)
 {
@@ -64,9 +62,9 @@ void Game::run()
 
 	////////////////////////////////////////////////////////
 	
-	// IMPORTANT NOTE: dt give approx 0.016 value must impement in any movement or timer related logics
+	// IMPORTANT NOTE: dt give approx 0.016 value
 	float player_x = 500;
-	float player_y = 100;	
+	float player_y = 100;	// row 11 * 64 - Pheight = 704 - 94
 
 	float max_speed = 10;
 	float jumpVelocity=70;
@@ -82,14 +80,10 @@ void Game::run()
 	playerTex.loadFromFile(("Sprites/Eri Kasamoto.png"));
 	
 	playerSprite.setTexture(playerTex);
+	//playerSprite.setScale(scale_x, scale_y);
 
-	Player* player = new Player(player_x, player_y, Pwidth / 2, Pheight / 2, playerTex, jumpVelocity, acceleration, max_speed, 0.25, 3, 5);// hard coded values must replace them later
-		//Player(player_x, player_y, Pwidth/2, Pheight/2, playerTex, 0.0f, 0.0f, jumpVelocity, acceleration,max_speed);
+	Player* player = new Player(player_x, player_y, Pwidth/2, Pheight/2, playerTex, 0.0f, 0.0f, jumpVelocity, acceleration,max_speed);
 
-
-	BulletPool bullets;
-	GrenadePool grenades;
-	RocketPool rockets;
 	////////////////////////////////////////////////////////
 
 	Event ev;
@@ -114,11 +108,11 @@ void Game::run()
 
 
 		//////////////////////////////////////////////////////////////////////// updates
-
+		// 
 			// makes sure that player does not get bellow screen
 		if (player->getPosition().y + player->getHitBox().height >= screen_y)	
 		{
-			player->onLand();
+			player->land();
 			player->setPosition(player->getPosition().x,screen_y - player->getHitBox().height);
 		}
 
@@ -135,9 +129,7 @@ void Game::run()
 		///////////////////////////////////////////////////////////////////////////////////////
 
 		player->update(dt);
-		bullets.update(dt);
-		grenades.update(dt);
-		rockets.update(dt);
+
 		
 		//std::cout << player->getPosition().x << ' ' << player->getPosition().y << std::endl;
 		
@@ -146,11 +138,7 @@ void Game::run()
 
 		display_level(window, height, width, lvl, wallSprite1, cell_size);
 		player->render(window);
-		rockets.render(window);
-		grenades.render(window);
-		bullets.render(window);
 
-		
 		window.display();
 	}
 

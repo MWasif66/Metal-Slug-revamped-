@@ -7,17 +7,7 @@ Gravity::Gravity(int tVelocity): g(700),terminalVelocity(tVelocity)
 
 void Gravity::applyGravity(float& yVelocity, float dt)
 {
-	if (yVelocity*dt < terminalVelocity*dt)
+	if (yVelocity < terminalVelocity)
 		yVelocity += g * dt;
-}
-
-Gravity::Gravity(const Gravity& gr): g(gr.g)
-{
-	terminalVelocity = gr.terminalVelocity;
-}
-
-const int Gravity::getG()
-{
-	return g;
 }
 

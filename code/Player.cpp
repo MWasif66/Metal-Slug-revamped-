@@ -1,9 +1,17 @@
 ﻿#include "Player.h"
 
+Player::Player(int x, int y, int width, int height, Texture& texture, float velocityX, float velocityY, int jumpVelocity, int acc, int maxSpeed):AnimatedObjects(x, y, width, height, texture, velocityX, velocityY,maxSpeed),jumpVelocity(jumpVelocity),gravity(maxSpeed),acceleration(acc)
+{
+	// at start free to move
+	bound.left = false;	
+	bound.right = false;
+	lives = 3;
+
+}
 
 Player::~Player()
 {
-	delete weapon;
+
 }
 
 
@@ -30,19 +38,17 @@ void Player::move(float dt)
 			velocityY = 0.0f;
 		}
 	}
-	 
+
 	// horizontal movement // crouch yet to add
 	if (Keyboard::isKeyPressed(Keyboard::Right) && !bound.right)
 	{
-		if (velocityX * dt < maxSpeed* dt)
-			velocityX += acceleration * dt;
+		if (velocityX < maxSpeed) velocityX += acceleration * dt;
 		currentState.isRuning = true;
 		currentState.isFacingLeft = false;
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Left) && !bound.left)
 	{
-		if (velocityX * dt > -maxSpeed * dt) 
-			velocityX -= acceleration * dt;
+		if (velocityX > -maxSpeed) velocityX -= acceleration * dt;
 		currentState.isRuning = true;
 		currentState.isFacingLeft = true;
 	}
@@ -67,8 +73,6 @@ void Player::setMovemntBound(bool left, bool right)
 void Player::update(float dt)
 {
 	move(dt);
-	weapon->updateFireTimer(dt);
-	grenadeCooldown.update(dt);
 }
 
 void Player::render(sf::RenderWindow& window)
@@ -97,35 +101,6 @@ void Player::render(sf::RenderWindow& window)
 	sprite.setPosition(position.x, position.y);
 	window.draw(sprite);
 }
-
-// throw grenade after a specific duration on G press
-bool Player::throwGranade(bool fireGranade)
-{
-	if (Keyboard::isKeyPressed(Keyboard::G) && grenadeCooldown.isReady())
-	{
-		grenadeCooldown.use();
-		grenadeCount--;
-		return true;
-	}
-	return false;
-}
-
-bool Player::shoot()
-{
-	if (Keyboard::isKeyPressed(Keyboard::Space))
-	{
-		return weapon->shoot();
-		// weapon manages ammo
-	}
-	return false;
-}
-
-void Player::addSaturation(int s)
-{
-	if(s<0)
-	saturation += s;
-}
-
 
 
 

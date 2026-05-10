@@ -30,15 +30,14 @@ public:
 	float getVelocityX();
 	float getVelocityY();
 	State getCurrentState();
+	State& setCurrentState();
 
 	void setVelocityX(float x);
 	void setVelocityY(float y);
 	State& updateState();
-	void onLand();
+	void land();
 	void inAir();
 
-	// toggle burn	
-	void burn(bool s);
 	void resetState();
 
 	

@@ -52,8 +52,3 @@ void Entity::setTexture(Texture t)
 {
 	sprite.setTexture(t);
 }
-
-Sprite& Entity::getSprite()
-{
-	return sprite;
-}

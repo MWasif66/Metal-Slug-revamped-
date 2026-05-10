@@ -131,18 +131,40 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedObjects.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Gravity.cpp" />
+    <ClCompile Include="Grenade.cpp" />
+    <ClCompile Include="GrenadePool.cpp" />
+    <ClCompile Include="Hmg.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="RocketPool.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedObjects.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="BulletPool.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Gravity.h" />
+    <ClInclude Include="Grenade.h" />
+    <ClInclude Include="GrenadePool.h" />
+    <ClInclude Include="Hmg.h" />
+    <ClInclude Include="MyVector.h" />
+    <ClInclude Include="Pistol.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="mString.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Rocket.h" />
+    <ClInclude Include="RocketPool.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

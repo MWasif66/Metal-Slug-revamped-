@@ -2,11 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <thread>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
-#include "mString.h"
+#include "mString.h";
 
-using namespace sf;
+
 
 // for coldown durations fire rate boss phases and much more
 struct Timer {
@@ -16,29 +18,22 @@ struct Timer {
 	Timer(float maxTime) : maxTime(maxTime), elapsed(maxTime) {}
 	// elapsed starts = maxTime so it's ready immediately on spawn
 
-	void update(float dt) 
-	{
+	void update(float dt) {
 		if (elapsed < maxTime)
 			elapsed += dt;
 	}
 
-	bool isReady() const 
-	{
+	bool isReady() const {
 		return elapsed >= maxTime;
 	}
 
-	void use() 
-	{
+	void use() {
 		elapsed = 0.f;  // reset the timer
 	}
 
-	bool isActive() const
-	{
-		return elapsed >= maxTime;
-	}
 };
 
-
+using namespace sf;
 struct Position	// for the position
 {
 	int x;
@@ -71,8 +66,7 @@ public:
 	HitBox getHitBox() const;
 	//void setHitBox(); don't think its needed
 	void setTexture(Texture t); //for animations if implemented
-	
-	Sprite& getSprite();
+
 	virtual void update(float dt) = 0;
 	virtual void render(sf:: RenderWindow & window) = 0;	// passing window to draw sprites of each entity
 

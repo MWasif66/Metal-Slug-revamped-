@@ -30,6 +30,11 @@ State AnimatedObjects::getCurrentState()
 	return currentState;
 }
 
+State& AnimatedObjects::setCurrentState()
+{
+	return currentState;
+}
+
 void AnimatedObjects::setVelocityX(float x)
 {
 	velocityX = x;
@@ -47,20 +52,14 @@ State& AnimatedObjects::updateState()
 }
 
 
-void AnimatedObjects::onLand() {
+void AnimatedObjects::land() {
 	currentState.onGround = true;
 	currentState.inAir = false;
-	currentState.inWater = false;
 }
 
 void AnimatedObjects::inAir() {
 	currentState.onGround = false;
 	currentState.inAir = true;
-	currentState.inWater = false;
-}
-void AnimatedObjects::burn(bool s)
-{
-	currentState.isBurning = s;
 }
 void AnimatedObjects::resetState()
 {
